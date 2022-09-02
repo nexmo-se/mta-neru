@@ -91,7 +91,7 @@ app.get('/session/:room', async (req, res) => {
 app.post('/startStreaming', async (req, res) => {
   try {
     console.log('someone wants to stream');
-    const { streamId, sessionId, specialty } = req.body;
+    const { streamId, sessionId, streamName, specialty } = req.body;
     const roomName = app.get('roomName-' + sessionId);
     console.log(roomName, specialty, streamId, sessionId);
 
@@ -100,6 +100,7 @@ app.post('/startStreaming', async (req, res) => {
         roomName,
         sessionId,
         streamId,
+        streamName,
         specialty,
       },
       comprehend.print_result
