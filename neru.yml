@@ -1,0 +1,18 @@
+project:
+  name: neru-mta-project
+instance:
+  name: prod
+  runtime: nodejs16
+  region: aws.euw1
+  application-id: 3fccb361-2c91-4846-90e6-ca2fefa2ed4a
+  entrypoint: [npm, run, server-prod]
+  secrets:
+    - AccessKeyId
+    - VIDEO_API_API_SECRET
+    - VIDEO_API_API_KEY
+    - SecretAccessKey
+    - REACT_APP_API_URL_PRODUCTION
+    - websocket_url
+    - NODE_ENV
+debug:
+  entrypoint: [npm, run, server-dev]
