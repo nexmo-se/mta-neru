@@ -14,8 +14,8 @@ const awsRegion = 'us-west-2';
 
 function create_presigned_url(room, specialty) {
   let endpoint = 'transcribestreaming.' + awsRegion + '.amazonaws.com:8443';
-  specialty = specialty ? specialty : 'PRIMARYCARE';
-
+  specialty = specialty? specialty: 'PRIMARYCARE';
+  
   return v4.createPresignedURL(
     'GET',
     endpoint,
@@ -33,11 +33,7 @@ function create_presigned_url(room, specialty) {
   );
 }
 
-async function connect_to_transcribe_web_socket(
-  presignedUrl,
-  { sessionId, streamId, streamName },
-  handleMessage
-) {
+async function connect_to_transcribe_web_socket(presignedUrl, {sessionId, streamId, streamName}, handleMessage) {
   console.log('Opening WS Connection', presignedUrl);
 
   try {
@@ -70,23 +66,16 @@ async function connect_to_transcribe_web_socket(
 
     return Promise.resolve(aws_socket);
   } catch (e) {
-    console.log(e);
+    console.log(e)
     return Promise.reject(e.message);
   }
 }
 
-const start_transcription = async (
-  { roomName, sessionId, streamId, streamName, specialty },
-  handleMessage
-) => {
+const start_transcription = async ({roomName, sessionId, streamId, streamName, specialty}, handleMessage) => {
   try {
     const url = create_presigned_url(roomName, specialty);
 
-    await connect_to_transcribe_web_socket(
-      url,
-      { sessionId, streamId, streamName },
-      handleMessage
-    );
+    await connect_to_transcribe_web_socket(url, {sessionId, streamId, streamName}, handleMessage);
   } catch (e) {
     console.log(e);
   }
@@ -127,12 +116,12 @@ const aws_socket_send = (msg, fromStreamId) => {
     const binary = convert_audio_to_binary_message(msg);
     aws_socket.send(binary);
   } catch (e) {
-    console.log(e);
+    console.log(e)
   }
-};
+}
 
 module.exports = {
-  aws_sockets,
-  start_transcription,
-  aws_socket_send,
-};
+    aws_sockets,
+    start_transcription,
+    aws_socket_send
+}

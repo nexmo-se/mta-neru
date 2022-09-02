@@ -2,15 +2,15 @@
   "name": "simple-vapile",
   "version": "1.0.0",
   "type": "commonjs",
+  "module": "server/index.js",
   "description": "",
   "main": "server/index.js",
   "scripts": {
-    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
-    "build": "PUBLIC_URL=/ REACT_APP_VERSION=$npm_package_version react-scripts build",
-    "test": "react-scripts test",
-    "prod": "concurrently \"npm run server-prod\" \"npm run start\"",
+    "start": "node server/index.js",
     "server-prod": "NODE_ENV=production node server/index.js",
-    "server-dev": "NODE_ENV=development nodemon server/index.js"
+    "server-dev": "NODE_ENV=development nodemon server/index.js",
+    "front-build": "PUBLIC_URL=/ REACT_APP_VERSION=$npm_package_version react-scripts build",
+    "test": "react-scripts test"
   },
   "author": "",
   "license": "ISC",

@@ -18,7 +18,7 @@ function Main() {
   const videoContainer = useRef();
   let { roomName } = useParams();
   const { preferences } = useContext(UserContext);
-  const [captions, setCaptions] = useState('Say something...');
+  const [captions, setCaptions] = useState({text: 'Say something...', speaker: ''});
 
   const [credentials, setCredentials] = useState(null);
   const [error, setError] = useState(null);
@@ -38,6 +38,7 @@ function Main() {
     medicalConditions,
     piiEntities,
     anatomyEntities,
+    ttpEntities,
   } = useSignalling({
     session: session.current,
   });
@@ -143,7 +144,13 @@ function Main() {
           ref={videoContainer}
           id="video-container"
         ></div>
-        <div className="medicalAnalysis">
+        <div className="medicalAnalysis" sx={{
+            display: "flex",
+            flexDirection: "column",
+            maxHeight: 820,
+            overflow: "hidden",
+            overflowY: "scroll"
+        }}>
           <div className="entityType">
             <EntitiesList
               listOfEntities={medicalConditions}
@@ -151,25 +158,20 @@ function Main() {
             />
           </div>
           <div className="entityType">
-            {medication ? (
-              <EntitiesList listOfEntities={medication} entity={'Medication'} />
-            ) : null}
+            <EntitiesList listOfEntities={medication} entity={'Medication'} />
           </div>
-          {/* <div className="entityType">
-            <EntitiesList
-              listOfEntities={anatomyEntities}
-              entity={'Anatomy'}
-            />
-          </div> */}
           <div className="entityType">
             <EntitiesList listOfEntities={anatomyEntities} entity={'Anatomy'} />
           </div>
           <div className="entityType">
             <EntitiesList listOfEntities={piiEntities} entity={'PII'} />
           </div>
+          <div className="entityType">
+            <EntitiesList listOfEntities={ttpEntities} entity={'Test Treatment Procedures'} />
+          </div>
         </div>
       </div>
-      <div className="original"> {captions}</div>
+      <div className="original">{captions? `${captions.speaker}: ${captions.text}` : ''}</div>
       <ToolBar
         handleAudioChange={handleAudioChange}
         handleVideoChange={handleVideoChange}

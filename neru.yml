@@ -5,7 +5,7 @@ instance:
   runtime: nodejs16
   region: aws.euw1
   application-id: 3fccb361-2c91-4846-90e6-ca2fefa2ed4a
-  entrypoint: [npm, run, server-prod]
+  entrypoint: [node, server/index.js]
   secrets:
     - AccessKeyId
     - VIDEO_API_API_SECRET

@@ -1,5 +1,7 @@
 const opentok = require('../opentok/opentok');
 
+process.env.ScoreThreshold = process.env.ScoreThreshold || 0.7
+
 const { ComprehendMedical } = require('aws-sdk');
 const marshaller = require('@aws-sdk/eventstream-marshaller');
 const util_utf8_node = require('@aws-sdk/util-utf8-node');
@@ -8,10 +10,10 @@ const eventStreamMarshaller = new marshaller.EventStreamMarshaller(
   util_utf8_node.fromUtf8
 );
 
-const comprehendMedical = new ComprehendMedical({
-  region: 'us-west-2',
+const comprehendMedical = new ComprehendMedical({ 
+  region: 'us-west-2', 
   accessKeyId: process.env.AccessKeyId,
-  secretAccessKey: process.env.SecretAccessKey,
+  secretAccessKey: process.env.SecretAccessKey
 });
 
 const getEntities = async (text) => {
@@ -23,8 +25,9 @@ const getEntities = async (text) => {
   console.log(resp.Entities);
   if (resp.Entities && resp.Entities.length) {
     const entities = filterByScore(resp.Entities);
-    return entities;
-  } else return resp.Entities;
+    return entities
+  }
+  else return resp.Entities;
 };
 
 const detectRxNorm = async (text) => {
@@ -34,7 +37,8 @@ const detectRxNorm = async (text) => {
   if (resp.Entities && resp.Entities.length) {
     const entities = filterByScore(resp.Entities);
     return sortConcepts(entities, 'RxNormConcepts');
-  } else return resp.Entities;
+  }
+  else return resp.Entities;
 };
 
 const detectICD10CM = async (text) => {
@@ -44,34 +48,31 @@ const detectICD10CM = async (text) => {
   if (resp.Entities && resp.Entities.length) {
     const entities = filterByScore(resp.Entities);
     return sortConcepts(entities, 'ICD10CMConcepts');
-  } else return resp.Entities;
+  }
+  else return resp.Entities;
 };
 
-const detectSNOMEDCT = async (text) => {
+const detectSNOMEDCT = async(text) => {
   if (text === undefined || text.replace(/\s/g, '') === '') return [];
   const resp = await comprehendMedical.inferSNOMEDCT({ Text: text }).promise();
   //('inferSNOMEDCT', resp.Entities);
   if (resp.Entities && resp.Entities.length) {
     const entities = filterByScore(resp.Entities);
     return sortConcepts(entities, 'SNOMEDCTConcepts');
-  } else return resp.Entities;
-};
+  }
+  else return resp.Entities;
+}
 
-const filterByScore = (items) =>
-  [...items].filter(
-    (item) => item.Score && item.Score - process.env.ScoreThreshold > 0
-  );
+const filterByScore = (items) => [...items].filter((item) => item.Score && (item.Score - process.env.ScoreThreshold > 0));
 
-const sortConcepts = (rawEntities, conceptAttribute) =>
-  rawEntities.map((entity) => {
+const sortConcepts = (rawEntities, conceptAttribute) => rawEntities.map((entity) => {
     if (entity[conceptAttribute].length === 0) return entity;
     entity[conceptAttribute] = filterByScore(entity[conceptAttribute]);
     const sortedConcepts = sortByScoreDescending(entity[conceptAttribute]);
     return { ...entity, [conceptAttribute]: sortedConcepts };
   });
 
-const sortByScoreDescending = (concepts) =>
-  [...concepts].sort((concept1, concept2) => concept2.Score - concept1.Score);
+const sortByScoreDescending = (concepts) => [...concepts].sort((concept1, concept2) => concept2.Score - concept1.Score);
 
 const getRoomFromUrl = (ws) => {
   const searchParams = new URLSearchParams(ws);
@@ -103,7 +104,7 @@ const print_result = async (message) => {
         sessionToSignal,
         {
           text: Results.Alternatives[0].Transcript,
-          speaker: streamName,
+          speaker: streamName
         },
         'captions'
       );
@@ -131,11 +132,7 @@ const print_result = async (message) => {
           //const ICD10CMString = JSON.stringify(ICD10CM[0]?.ICD10CMConcepts);
           //opentok.signal(sessionToSignal, ICD10CMString, 'medCondition');
           //
-          opentok.signal(
-            sessionToSignal,
-            JSON.stringify(ICD10CM),
-            'medCondition'
-          );
+          opentok.signal(sessionToSignal, JSON.stringify(ICD10CM), 'medCondition');
         }
       }
     } catch (e) {
