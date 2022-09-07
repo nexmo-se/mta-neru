@@ -106,6 +106,13 @@ body {
   /* align-self: ; */
 }
 
+.captionsComposer {
+  color: white;
+  position: absolute;
+  bottom: 50px;
+  left: 10px;
+}
+
 .toolbar {
   /* background-color: black; */
   -webkit-order: 0;
