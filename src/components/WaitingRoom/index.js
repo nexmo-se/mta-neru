@@ -182,11 +182,11 @@ export default function WaitingRoom() {
     pubInitialised,
   ]);
 
-  // useEffect(() => {
-  //   return () => {
-  //     destroyPublisher();
-  //   };
-  // }, [destroyPublisher]);
+  useEffect(() => {
+    return () => {
+      destroyPublisher();
+    };
+  }, [destroyPublisher]);
 
   useEffect(() => {
     setPreferences({

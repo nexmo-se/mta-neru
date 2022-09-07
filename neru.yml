@@ -14,5 +14,6 @@ instance:
     - REACT_APP_API_URL_PRODUCTION
     - websocket_url
     - NODE_ENV
+    - ScoreThreshold
 debug:
   entrypoint: [npm, run, server-dev]

@@ -28,10 +28,16 @@ function Main() {
   const [userId, setUserId] = useState(null);
   // const [translationPlaying, setTranslationPlaying] = useState(false);
 
-  const { session, createSession, connected, status, destroySession } =
-    useSession({
-      container: videoContainer,
-    });
+  const {
+    session,
+    createSession,
+    connected,
+    status,
+    destroySession,
+    isArchiving,
+  } = useSession({
+    container: videoContainer,
+  });
   // const medicalConditions = ['heart failure', 'type 2 diabetes', 'lung cancer'];
   const {
     messages,
@@ -152,6 +158,12 @@ function Main() {
   //   };
   // });
 
+  useEffect(() => {
+    return () => {
+      destroyPublisher();
+    };
+  }, [destroyPublisher]);
+
   return (
     <>
       <div className="videoContainer">
@@ -203,6 +215,7 @@ function Main() {
         hasAudio={hasAudio}
         hasVideo={hasVideo}
         publisher={publisher}
+        isArchiving={isArchiving}
       />
     </>
   );

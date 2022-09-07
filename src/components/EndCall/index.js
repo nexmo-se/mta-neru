@@ -25,7 +25,6 @@ export default function EndCall() {
     push('/');
   };
   useEffect(() => {
-    destroyPublisher();
     // if (sessionId !== 'undefined') {
     console.log(sessionId);
     fetchRecordings(sessionId)
@@ -41,11 +40,11 @@ export default function EndCall() {
       });
   }, [sessionId, destroyPublisher]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      window.OT.publishers.map((e) => e)[0].destroy();
-    }, 3000);
-  });
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     window.OT.publishers.map((e) => e)[0].destroy();
+  //   }, 3000);
+  // });
 
   return (
     <div className={classes.container}>
