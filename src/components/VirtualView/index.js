@@ -16,8 +16,11 @@ import { useSignalling } from '../../hooks/useSignalling';
 import EntitiesList from '../EntitiesList';
 
 function VirtualView() {
+  let translationPlaying = useRef(false);
+  const [userId, setUserId] = useState(null);
   const [credentials, setCredentials] = useState(null);
-
+  let timePlayingLeft = useRef(0);
+  // const [timePlayingLeft, setTime] = useState(0);
   const videoContainer = useRef();
   let { roomName } = useParams();
   const { preferences } = useContext(UserContext);
@@ -116,7 +119,7 @@ function VirtualView() {
           </div>
         </div>
       </div>
-      <div className="captionsComposer">
+      <div className="original">
         {captions ? `${captions.speaker}: ${captions.text}` : ''}
       </div>
     </>

@@ -10,7 +10,10 @@ body {
 ::-webkit-scrollbar {
   display: none;
 } */
-
+a {
+  color: #0060b6;
+  text-decoration: none;
+}
 .text {
   margin-left: 20px;
   margin-top: 25px;
@@ -104,14 +107,6 @@ body {
   justify-content: center;
   color: aliceblue;
   /* align-self: ; */
-}
-
-.captionsComposer {
-  color: white;
-  position: absolute;
-  bottom: 50px;
-  left: 10px;
-  max-width: 40vw;
 }
 
 .toolbar {

@@ -189,15 +189,23 @@ export default function WaitingRoom() {
   }, [destroyPublisher]);
 
   useEffect(() => {
-    setPreferences({
-      defaultSettings: {
-        publishAudio: localAudio,
-        publishVideo: localVideo,
-        audioSource: localAudioSource,
-        videoSource: localVideoSource,
-        audioOutput: localAudioOutput,
-      },
-    });
+    if (
+      localAudio !== preferences.defaultSettings.publishAudio ||
+      localVideo !== preferences.defaultSettings.publishVideo ||
+      localAudioSource !== preferences.defaultSettings.audioSource ||
+      localVideoSource !== preferences.defaultSettings.videoSource ||
+      localAudioOutput !== preferences.defaultSettings.localAudioOutput
+    )
+      setPreferences({
+        ...preferences,
+        defaultSettings: {
+          publishAudio: localAudio,
+          publishVideo: localVideo,
+          audioSource: localAudioSource,
+          videoSource: localVideoSource,
+          audioOutput: localAudioOutput,
+        },
+      });
   }, [
     localAudio,
     localVideo,
@@ -205,6 +213,7 @@ export default function WaitingRoom() {
     localAudioSource,
     localVideoSource,
     localAudioOutput,
+    preferences,
   ]);
 
   return (
